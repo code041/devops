@@ -10,7 +10,7 @@ import { ServicoService } from './servico.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  title = 'frontend';
+  title = 'frontends';
 
   constructor(
     private servico: ServicoService
