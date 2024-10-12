@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-vol
+  labels:
+    name: redis-service
+spec:
+  selector: 
+    name: redis-vol
+  ports:
+  - port: 6379
+    targetPort: 6379
