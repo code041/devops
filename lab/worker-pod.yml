@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker-pod
+  labels:
+    name: worker-pod
+    app: demo-voting-app
+spec:
+  containers:
+  - name: worker
+    image: ghcr.io/dockersamples/example-voting-app-worker:latest
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
