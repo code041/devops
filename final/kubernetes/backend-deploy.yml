@@ -1,15 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-deploy
+  name: myapp-backend-deploy
 spec:
   selector:
     matchLabels:
       name: myapp
+      tier: backend
   template:
     metadata:
       labels:
         name: myapp
+        tier: backend
     spec:
       containers:
       - name: nginx
