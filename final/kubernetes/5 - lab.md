@@ -1,80 +1,38 @@
 # Laboratório de microservicços
 
-* O laboratório consiste em provisionar um sistema composto por 5 serviços:
-  * Um app para votação
-  * Um app para ver o resultado
-  * Um banco de dados em memória
-  * Um banco de dados tradicional
-  * E um worker, que transfere os dados entre os bancos
+* Neste laboratório, vamos criar um sistema composto por 5 serviços:
+  * Um app para votação;
+  * Um app para ver o resultado;
+  * Um banco de dados em memória;
+  * Um banco de dados tradicional; e
+  * Um worker, que transfere os dados entre os bancos.
 
-* Deploy contianers
-* Habiltiar conexao
-* Acesso externo
+  ![alt text](image.png)
 
-* Criar um ClusterIP para o redis e outro para o postgres
-* Criar NodePort para o voting-app e para o result-app
+* O primeiro passo será a criação de _deployments_ para cada um dos serviços.
 
-> https://github.com/dockersamples/example-voting-app
+> Dica 1: crie um diretório separado para os arquivos deste laboratório.
 
-* Obtenha as imagens
+1. Crie um _deploy_ para o serviço `example-voting-app-vote`
+1. Crie um _deploy_ para o serviço `example-voting-app-result`
+1. Crie um _deploy_ para o serviço `example-voting-app-worker`
+1. Crie um _deploy_ para o serviço `redis`
+1. Crie um _deploy_ para o serviço `postgresql`
+1. Ao final, execute o comando `apply` (ou `create`) para cada um dos _deployments_ criados.
 
-```bash
-docker pull ghcr.io/dockersamples/example-voting-app-vote:after
-docker pull ghcr.io/dockersamples/example-voting-app-result:after
-docker pull ghcr.io/dockersamples/example-voting-app-worker:latest
-```
+> Dica 2: as imagens dos serviços `vote`, `result` e `worker` podem ser encontradas em: https://github.com/dockersamples/example-voting-app
+>
+> Utilize o comando `docker pull`, para copiá-las do __Docker Hub__ para o seu host.
+> ```bash
+> docker pull ghcr.io/dockersamples/example-voting-app-vote:after
+> docker pull ghcr.io/dockersamples/example-voting-app-result:after
+> docker pull ghcr.io/dockersamples/example-voting-app-worker:latest
+> ```
 
-```yml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: voting-app-pod
-  labels:
-    name: voting-app-pod
-    app: demo-voting-app
-spec:
-  containers:
-  - name: voting-app
-    image: ghcr.io/dockersamples/example-voting-app-vote
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-    ports:
-      - containerPort: 80
-```
+* O segundo passo será a criação de um _Cluster IP_ para os bancos de dados.
 
-```bash
-kubectl apply -f voting-app-pod.yml 
-```
+1. Crie um _ClusterIP_ para o serviço __redis__
+1. Crie um _ClusterIP_ para o serviço __postgres__
 
-```yml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: result-app-pod
-  labels:
-    name: result-app-pod
-    app: demo-voting-app
-spec:
-  containers:
-  - name: result-app
-    image: ghcr.io/dockersamples/example-voting-app-result:after
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-    ports:
-      - containerPort: 80
-```
-
-```bash
-kubectl apply -f result-app-pod.yml 
-```
-
-
-
-
-
-## Deployments
-
+* O terceiro e último passo será a criação de um _NodePort_ para os serviços `vote` e `result`.
+* Não é necessário criar nenhum serviço para o `worker`.
