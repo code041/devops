@@ -184,20 +184,13 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp
+  name: nginx-2
   labels:
     name: myapp
-    tier: frontend
 spec:
   containers:
-  - name: myapp
+  - name: nginx
     image: nginx
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-    ports:
-      - containerPort: 3000
 ```
 
 * No terminal, acesse o diretório `k8s` e execute o comando `apply`, conforme o exemplo:

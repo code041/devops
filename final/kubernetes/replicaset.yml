@@ -4,18 +4,17 @@ metadata:
   name: myapp-replicaset
   labels:
     name: myapp
-    tier: frontend
 spec:
-  replicas: 8
+  replicas: 3
   selector:
     matchLabels:
-      app: myapp
+      name: myapp
   template:
     metadata:
+      name: nginx-2
       labels:
-        app: myapp
-        type: frontend
+        name: myapp
     spec:
       containers:
-      - name: nginx-controller
+      - name: nginx
         image: nginx

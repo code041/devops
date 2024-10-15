@@ -15,7 +15,6 @@ metadata:
   name: myapp-rc
   labels:
     name: myapp
-    tier: frontend
 spec:
   replicas: 3
   template:
@@ -162,9 +161,8 @@ myapp-rc-wqcf2   1/1     Running   0          112s
 
 ## ReplicaSet
 
-* O replicaset exige que se informe um seletor em seu arquivo de configuração. Isso permite ao ReplicaSet considerar pods existentes para o calcula da quantidade de replicas que devem estar em execução
-* è pra isso que as labels são usadas
-* A parte do template é necessária para que o K8s saiba como criar um novo pod, caso necessário
+* A vantagem do _replica set_ é que ele gerencia pods que foram criados anterior ou posteriormente, considerando-os para manter a quantidade desejada de instâncias em execução. 
+* Para conseguir controlar a quantidade desejada de pods, o _replica set_ exige que sejam informados campos adicionais: as _labels_ que serão usadas para selecionar os pods que farão parte da réplica.
 
 * Crie o arquivo `replicaset.yml`.
 
@@ -175,20 +173,19 @@ metadata:
   name: myapp-replicaset
   labels:
     name: myapp
-    tier: frontend
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: myapp
+      name: myapp
   template:
     metadata:
+      name: nginx-2
       labels:
-        app: myapp
-        type: front-end
+        name: myapp
     spec:
       containers:
-      - name: nginx-controller
+      - name: nginx
         image: nginx
 ```
 
@@ -211,7 +208,50 @@ NAME                               DESIRED   CURRENT   READY   AGE
 replicaset.apps/myapp-replicaset   3         3         3       44s
 ```
 
-* Agora, execute o comando `scale`, para aumentar a quantidade de réplicas.
+* Em seguida, crie um novo pod, a partir do arquivo `pod.yml`.
+
+```bash
+kubectl apply -f pod.yml
+pod/nginx-2 created
+
+kubectl get pods
+NAME                     READY   STATUS    RESTARTS   AGE  
+myapp-replicaset-2sk2w   1/1     Running   0          5m46s
+myapp-replicaset-4f2fj   1/1     Running   0          5m46s
+myapp-replicaset-4l7zg   1/1     Running   0          5m46s
+```
+
+* Embora o pod tenha sido criado, sua execução foi terminada logo em seguida.
+* Por fim, remova todos os objetos do K8S, crie um pod a partir do arquivo `pod.yml` e um _replica set_, nessa ordem.
+
+``` bash
+kubectl delete all --all
+pod "myapp-replicaset-2sk2w" deleted
+pod "myapp-replicaset-4f2fj" deleted
+pod "myapp-replicaset-4l7zg" deleted
+service "kubernetes" deleted
+replicaset.apps "myapp-replicaset" deleted
+
+kubectl apply -f pod.yml
+pod/nginx-2 created
+
+kubectl get pods
+NAME      READY   STATUS    RESTARTS   AGE
+nginx-2   1/1     Running   0          4s
+
+kubectl apply -f replicaset.yml
+replicaset.apps/myapp-replicaset created
+
+kubectl get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+myapp-replicaset-dqzc6   0/1     ContainerCreating   0          4s
+myapp-replicaset-vfm4r   1/1     Running             0          4s
+nginx-2                  1/1     Running             0          26s
+```
+
+### _Replace_
+
+* Para aumentar a quantidade de réplicas, utilize o comando `scale`
 
 ```bash
 kubectl scale replicaset myapp-replicaset --replicas=4    
@@ -238,11 +278,6 @@ myapp-replicaset-vs94s   1/1     Running   0          18s
 ```
 
 * Perceba que, apesar da quantidade de réplicas ter sido alterada anteriormente, tal mudança não foi persistida no arquivo de definição.
-
-
-### _Replace_
-
-
 * A única maneira de persistir tal mudança no arquivo `replicaset.yml` é por meio de uma alteração direta em seu conteúdo.
 * Para aumentar ou diminuir a quantidade de réplicas, é possível alterar o arquivo de definição e executar o comando `replace`. 
 
@@ -253,20 +288,19 @@ metadata:
   name: myapp-replicaset
   labels:
     name: myapp
-    tier: frontend
 spec:
-  replicas: 8 ## altere a quantidade de réplicas aqui
+  replicas: 8 # ALTERE A QUANTIDADE DE RÉPLICAS AQUI
   selector:
     matchLabels:
-      app: myapp
+      name: myapp
   template:
     metadata:
+      name: nginx-2
       labels:
-        app: myapp
-        type: frontend
+        name: myapp
     spec:
       containers:
-      - name: nginx-controller
+      - name: nginx
         image: nginx
 ```
 
