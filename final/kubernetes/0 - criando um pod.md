@@ -1,28 +1,4 @@
-# Introdução
-
-* Kubernetes or K8S é um sistema de orquestração de containers
-* Docker permite criar um container em uma máquina, mas não consegue gerenciar múltiplos containers em _hosts_ diferentes
-* K8s também permite gerenciar réplicas de um mermo serviço
-* K8S realiza o balanço de carga entre essas réplicas
-* Se houver aumento ou diminuição da carga, K8s se encarrega de aumentar e diminuir  automaticamente a quantidade de réplicas
-* K82 realiza o health check dos containers e susbtitui containers que falharam
-* Kubernetes suporta multiplas tecnolgocias de containers, como docker, cri-o e contanerd
-
-## POD
-
-* K8s não gerencia diretamente um container, mas um encapsulamento sobre ele, chamado POD
-* Um POD pode conter múltiplos containers (que frase horrível), volumes e IPs compartilhados
-* Apesar disso, o caso de uso mais comum é o de um container por POD
-* Um POD deve estar implantado em um _host_. Não é possível distribuir um único POD em vários servidores, ainda que ele tenha diferentes containers dentro dele.
-
-## Cluster
-
-* PODs podem ser agrupados em conjuntos: nós
-* Um Cluster é um conjunto de nós _hosts_ reais ou virtuais, que podem estar distribuídos em diferentes data centers
-* Nós podem ser master ou workers. Os nós masters rodam pods de sistema, como load balancer
-* Os pods das aplicações rodam nos workers nodes
-
-## Criando um Pod
+# Criando um Pod
 
 * No terminal, execute o comando `kubectl run`, conforme o exemplo abaixo:
 

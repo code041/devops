@@ -5,7 +5,8 @@
 
 * Dois pods, rodando em nós diferentes de um cluster, usando a mesma imagem, com o mesmo container, podem ter o mesmo endereço IP associado.
 
-![alt text](image.png)
+
+## NodePort
 
 * Crie o arquivo `service.yml`
 

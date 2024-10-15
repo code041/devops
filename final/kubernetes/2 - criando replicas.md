@@ -76,7 +76,7 @@ spec:
 * Para aumentar ou diminuir a quantidade de réplicas, é possível alterar o arquivo de definição e executar o comando `replace`. 
 
 ```bash
-kubectl replace -f replicaset-definitin.yml
+kubectl replace -f replicaset-definition.yml
 ```
 
 * Outra maneira é por meio do comando `scale`. Isso, contudo, não altera o conteúdo do arquivo de definição.

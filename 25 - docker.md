@@ -36,42 +36,13 @@ docker rmi nginx
 docker pull nginx
 ```
 
-* um contianer morre qunado não há nenhum processo executando dentro dele
-
-```bash
-docker run ubuntu
-docker ps
-```
-
-```bash
-docker run -d centos sleep 20
-```
-
-```bash
-docker run -it centos bash
-```
-
 ```bash
 docker run kodekloud/simple-webapp
 ```
 
-* Para executar em `background`
-
-```bash
-docker run -d kodekloud/simple-webapp
-```
 
 * Para associar o terminal do host ao terminal do container
 
-```bash
-docker attach container_id
-```
-
-* Para parar a execução
-
-```bash
-docker stop
-```
 
 ```bash
 docker rm {container_id}
@@ -81,33 +52,6 @@ docker rm {container_id}
 docker rmi {image_id}
 ```
 
-```bash
-docker exec {container_id} cat /etc/*release* 
-```
-
-# Docker run
-
-```bash
-docker run redis:4.0
-```
-
-* modo iterativo
-
-
-```bash
-
-```
-
-# port mapping
-
-* O IP associado pelo docker host é interno, e só pode ser acessado do mesmo nó de rede
-* Para acessar externamente, é necessário associar a porta do container a uma porta livre no host
-
-```bash
-docker run -p 80:5000 kodekloud/simple-webapp
-docker run -p 8000:5000 kodekloud/simple-webapp
-docker run -p 3306:3306 mysql
-docker run -p 3306:3306 mysql
 ```
 
 # volumes
