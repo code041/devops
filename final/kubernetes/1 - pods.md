@@ -184,7 +184,7 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-2
+  name: myapp-pod
   labels:
     name: myapp
 spec:
